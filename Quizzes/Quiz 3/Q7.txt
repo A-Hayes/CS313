@@ -1,0 +1,38 @@
+This file is pseudocode.
+
+Purpose: approximate mutex with atomic swap
+
+struct mutex{
+  //for brevity, other initializers omitted as this isn't real code anyway
+  boolean isLocked = false;
+  
+  //lock/wait
+  void P{
+    //busy-spin loop, to prevent other threads from interfering
+    while(true){
+      //temp bool to store old value of isLocked for comparison
+      //after swap, isLocked = true & temp = (prev val of isLocked)
+      bool temp = true;
+      atomic::swap(temp, &isLocked);
+      
+      //While these will keep swapping back and forth,
+      //they will both be true until V() is called. 
+      //Once isLocked is back to true, temp will have 
+      //that value after the next swap, which will
+      //then break the while loop.
+    
+      //continues to check if temp is true, releases lock otherwise
+      if(!temp){
+        break;
+      }
+    }    
+  }
+  
+  //unlock/release
+  void V{
+    isLocked = false;
+  }
+};
+
+
+

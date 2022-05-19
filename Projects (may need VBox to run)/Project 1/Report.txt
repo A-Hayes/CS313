@@ -1,0 +1,45 @@
+Asa Hayes
+Ahmed
+CSCE-313-199
+2 June, 2020
+
+*
+Report/Instructions: Project 1
+*
+
+Run Instructions:
+	Running just 'client' with no flags or arguments will just start 'server' as a subprocess, open 
+	the control channel, and then close both in the proper order. All flags perform as shown in the 
+	handout. Each assumes valid input. Each section of code will only trigger if the relevant flag/s
+	are set at runtime.
+		-p: Set patient/person number. Requires an argument (int, 1-15)
+		-t: Set time. Requires an argument (double, 0.0 to 60.0, increments of 0.004 only)
+		-e: Set ECG. Requires an argument (int, 1-2)
+		Note: -p, -t, and -e all require all three be set to print a point.
+		-m: Set maximum message buffer in bytess, defaults to 256. Requires an argument (int, >0)
+		-f: Set a filename for file transfer. Requires an argument (string, a filename in '/BIMDC')
+		-c: Instruct server to create new channel, get/show several sample points, then exit.
+		
+Design:
+	Coding was done on a per-function basis, following the tasks list on the handout. Once all 
+	functions were created and running inline (all functions done wiht 1 run of ./client), code was 
+	modularized to fit into argument scheme prescribed by handout. This reduced runtime by only 
+	perfomring the requested actions. After code was verified as functioning with arguments, timing 
+	segments were added in and both relevant sections were tested. 
+	
+Timing:
+	Timing for getting 1 data point was registered at 0.004978 seconds.
+	Timing for printing 1k data points from 1.csv to x1.csv was registered at 5.77119 seconds. 
+	Timing for file transfers was done via generation of 3 files with truncate (10Kb, 100Kb, 1Mb). 
+	After testing, the same files were also time-tested under an increased max buffer size 
+	(512 vs. 256 default). Accuracy of transferring contents was assessed by transferring 
+	'desktop.ini' and verifiying the contents.
+	
+	File:	 |Time (256b buffer)|Time (512b buffer)|
+	------------------------------------------------
+	10K.data |0.0009s			|0.000898s			|
+	100K.data|0.029665s			|0.020987s			|
+	1M.data  |0.300525s			|0.162048s			|
+	
+	Increasing buffer size does enhance file transfer speed, with more pronounced effects at higher filesizes.
+	
